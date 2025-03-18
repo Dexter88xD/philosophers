@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:52:38 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/18 07:25:57 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/18 10:31:13 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 
 /***********MACROS***********/
 
-# define USAGE_ERROR 1
-# define LOGIC_ERROR 2
-# define INT_ERROR 3
-# define MALLOC_ERROR 4
-# define THREAD_ERROR 5
+# define USAGE_ERROR 		1
+# define LOGIC_ERROR 		2
+# define INT_ERROR 			3
+# define MALLOC_ERROR 		4
+# define THREAD_MUTEX_ERROR 5
 
 # define NEED_JOIN 1
 # define NO_NEED_JOIN 2
@@ -47,7 +47,7 @@ typedef struct s_philo
 {
 	int				index;
 	pthread_t		thread;
-	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	right_fork;
 	pthread_mutex_t	*left_fork;
 	t_info			*info;
 }					t_philo;
@@ -71,6 +71,7 @@ void	print_usage_error(int index);
 
 /***********CLEANING AND FREEING***********/
 
+void	cleanup(t_philo *philo, t_info *info);
 void	clean_error_threads(t_info *info, t_philo *philo, int thread, int flag);
 
 #endif
