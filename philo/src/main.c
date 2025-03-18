@@ -6,74 +6,60 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:54:56 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/11 04:56:44 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/18 07:19:35 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	check_if_integer(char *input)
+void	*print_struct(void *param)
 {
-	int	i;
+	t_philo	*philo;
 
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] < '0' || input[i] > '9')
-		{
-			print_usage_error(INT_ERROR);
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
+	philo = (t_philo *)param;
+	printf("the philosophers number: %d\n", philo->index);
+	return (NULL);
 }
 
-int	check_input(char **av, int *input)
+void	set_table(t_info *info, t_philo *philo)
 {
 	int	i;
-	int	j;
-	int	temp;
-	int	temp_array[5];
 
 	i = 0;
-	j = 0;
-	while (av[++i])
-	{
-		check_if_integer(av[i]);
-		temp = ft_atoi(av[i]);
-		if (temp <= 0)
-			(print_usage_error(LOGIC_ERROR), exit(EXIT_FAILURE));
-		temp_array[j++] = temp;
+	while (i < info->nbr_philo)
+	{		
+		if (pthread_create(&(philo[i].thread), NULL, print_struct, &(philo[i])))
+			clean_error_threads(info, philo, i, NEED_JOIN);
+		philo[i].index = i;
+		philo[i].info = info;
+		i++;
 	}
-	input[NBR_PHILO] = temp_array[0];
-	input[TIME_DIE] = temp_array[1];
-	input[TIME_EAT] = temp_array[2];
-	input[TIME_SLEEP] = temp_array[3];
-	if (j == 4)
-		temp_array[j] = 0;
-	else
-		input[END_OF_INPUT] = 0;
-	input[NBR_TIME_EAT] = temp_array[4];
-	return (1);
+	i = 0;
+	while (i < info->nbr_philo)
+	{
+		if (pthread_join(philo[i].thread, NULL))
+			clean_error_threads(info, philo, i, NO_NEED_JOIN);
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
 {
-	int	i;
-	int	input[5];
+	t_info	*info;
+	t_philo	*philo;
 
 	if (ac < 5 || ac > 6)
-	{
-		print_usage_error(USAGE_ERROR);
-		return (1);
-	}
-	if (!check_input(av, input))
-		return (1);
-	i = 0;
-	while (input[i])
-	{
-		printf("Argument: %d\n", input[i]);
-		i++;
-	}
+		return (print_usage_error(USAGE_ERROR), 1);
+	info = (t_info *)malloc(sizeof(t_info));
+	if (!info)
+		return (print_usage_error(MALLOC_ERROR), 1);
+	if (!check_input(av, info))
+		return (free(info), 1);
+	philo = (t_philo *)malloc(info->nbr_philo * sizeof(t_philo));
+	if (!philo)
+		return (print_usage_error(MALLOC_ERROR), 0);
+	set_table(info, philo);
+	free(info);
+	free(philo);
 	return (0);
 }

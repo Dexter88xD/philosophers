@@ -1,7 +1,7 @@
 #This is the brain of the whole operation.
 #Let's get this ship going!
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I.
+CFLAGS = -Wall -Wextra -Werror -g -pthread -I.
 RM = rm -rf
 
 SRC_DIR = src
@@ -9,7 +9,7 @@ OBJ_DIR = obj
 
 NAME = philo
 
-SRCS = main.c print_error.c utils.c
+SRCS =	main.c	utils.c	print_error.c	cleanup.c 
 
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
