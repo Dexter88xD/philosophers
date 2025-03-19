@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:34:12 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/18 07:26:22 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/19 09:07:55 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-int	check_input(char **av, t_info *info)
+int	check_initialise_input(char **av, t_info *info)
 {
 	int	i;
 
