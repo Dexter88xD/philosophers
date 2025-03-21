@@ -6,11 +6,26 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:24:53 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/21 13:00:36 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:56:46 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+void	check_death(t_philo *philo)
+{
+	long	time;
+
+	pthread_mutex_lock(&(philo->info->death_mutex));
+	time = current_time() - philo->info->start_clock;
+	if (time > philo->info->time_die)
+	{
+		print_messages(philo, time, DIED);
+		cleanup(philo, philo->info);
+		exit(EXIT_SUCCESS);
+	}
+	pthread_mutex_unlock(&(philo->info->death_mutex));
+}
 
 void	*simulate(void *param)
 {
@@ -21,12 +36,13 @@ void	*simulate(void *param)
 	i = 0;
 	while (1)
 	{
+		check_death(philo);
 		if (philo->info->nbr_time_eat != -1)
 		{
-			i++;
 			if (i > philo->info->nbr_time_eat)
 				break ;
 		}	
+		i++;
 		feed_philosophers(philo);
 		sleep_philosophers(philo);
 	}

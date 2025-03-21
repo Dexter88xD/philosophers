@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 07:18:24 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/21 12:36:41 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:45:25 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	clean_error_threads(t_info *info, t_philo *philo, int thread, int flag)
 
 void	cleanup(t_philo *philo, t_info *info)
 {
-	if (philo)
-		free(philo);
 	if (info)
 		free(info);
+	if (philo)
+		free(philo);
 }

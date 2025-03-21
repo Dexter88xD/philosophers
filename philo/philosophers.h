@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:52:38 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/21 12:54:21 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:58:13 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define EATING				"is eating"
 # define SLEEPING			"is sleeping"
 # define THINKING			"is thinking"
+# define DIED				"died"
 
 /***************STRUCTS***************/
 
@@ -50,6 +51,7 @@ typedef struct s_info
 	long				start_clock;
 	time_t				time;
 	pthread_mutex_t		print_mutex;
+	pthread_mutex_t		death_mutex;
 }					t_info;
 
 typedef struct s_philo

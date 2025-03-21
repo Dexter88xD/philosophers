@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:54:56 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/21 12:37:03 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:48:15 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	initialise_mutexes(t_info *info, t_philo *philo)
 
 	i = 0;
 	if (pthread_mutex_init(&(info->print_mutex), NULL))
+		clean_error_threads(info, philo, i, NO_NEED_JOIN);
+	if (pthread_mutex_init(&(info->death_mutex), NULL))
 		clean_error_threads(info, philo, i, NO_NEED_JOIN);
 	while (i < info->nbr_philo)
 	{
