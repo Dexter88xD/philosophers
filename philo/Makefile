@@ -9,7 +9,7 @@ OBJ_DIR = obj
 
 NAME = philo
 
-SRCS = main.c		cleanup.c	initialising.c		print_error.c \
+SRCS = main.c		cleanup.c	philo_actions.c \
        printing.c	utils.c		setting_table.c
 
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

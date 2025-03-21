@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:52:38 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/19 14:33:33 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:54:21 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 
-/***********MACROS***********/
+/***************MACROS***************/
 
 # define USAGE_ERROR 		1
 # define LOGIC_ERROR 		2
@@ -30,10 +30,15 @@
 # define MALLOC_ERROR 		4
 # define THREAD_MUTEX_ERROR 5
 
-# define NEED_JOIN 1
-# define NO_NEED_JOIN 2
+# define NEED_JOIN 			1
+# define NO_NEED_JOIN 		2
 
-/***********STRUCTS***********/
+# define TAKEN_A_FORK		"has taken a fork"
+# define EATING				"is eating"
+# define SLEEPING			"is sleeping"
+# define THINKING			"is thinking"
+
+/***************STRUCTS***************/
 
 typedef struct s_info
 {
@@ -42,22 +47,21 @@ typedef struct s_info
 	int					time_eat;
 	int					time_sleep;
 	int					nbr_time_eat;
-	time_t				time;
-	struct timeval		clock;
 	long				start_clock;
-	pthread_mutex_t		keep_order;
+	time_t				time;
+	pthread_mutex_t		print_mutex;
 }					t_info;
 
 typedef struct s_philo
 {
 	int				index;
+	t_info			*info;
 	pthread_t		thread;
 	pthread_mutex_t	right_fork;
 	pthread_mutex_t	*left_fork;
-	t_info			*info;
 }					t_philo;
 
-/***********PARSING AND CHECKING***********/
+/***************PARSING AND CHECKING***************/
 
 void	check_if_integer(char *input);
 
@@ -66,24 +70,32 @@ char	*ft_strchr(const char *s, int c);
 int		check_initialise_input(char **av, t_info *input);
 int		ft_atoi(const char *nptr);
 
-/***********INITALISING***********/
+/***************INITALISING***************/
 
 void	initialise_mutexes(t_info *info, t_philo *philo);
 void	set_table(t_info *info, t_philo *philo);
 
-long	current_time(t_philo *philo);
-long	current_time_info(t_info *info);
+long	current_time(void);
 
-/***********PRINTING MESSAGES***********/
+/***************SIMULATION***************/
 
-void	*print_struct(void *param);
+void	*simulate(void *param);
+
+void	sleep_philosophers(t_philo *philo);
+
+void	feed_philosophers(t_philo *philo);
+void	feed_pair_philosophers(t_philo *philo);
+void	feed_unpair_philosophers(t_philo *philo);
+
 void	one_philo_issue(t_info *info, t_philo *philo);
 
-/***********PRINTING ERRORS***********/
+/***************PRINTING***************/
 
-void	print_usage_error(int index);
+void	print_messages(t_philo *philo, long time, char *message);
 
-/***********CLEANING AND FREEING***********/
+void	print_errors(int index);
+
+/***************CLEANING AND FREEING***************/
 
 void	cleanup(t_philo *philo, t_info *info);
 void	clean_error_threads(t_info *info, t_philo *philo, int thread, int flag);

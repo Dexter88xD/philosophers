@@ -6,11 +6,22 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 15:34:12 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/19 09:07:55 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:37:42 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+long	current_time(void)
+{
+	long			time;
+	struct timeval	clock;
+
+	gettimeofday(&clock, NULL);
+	time = clock.tv_sec * 1000;
+	time += clock.tv_usec / 1000;
+	return (time);
+}
 
 void	check_if_integer(char *input)
 {
@@ -19,14 +30,14 @@ void	check_if_integer(char *input)
 	i = 0;
 	if (input[0] == '-' || input[0] == '\0')
 	{
-		print_usage_error(INT_ERROR);
+		print_errors(INT_ERROR);
 		exit(EXIT_FAILURE);
 	}
 	while (input[i])
 	{
 		if (input[i] < '0' || input[i] > '9')
 		{
-			print_usage_error(INT_ERROR);
+			print_errors(INT_ERROR);
 			exit(EXIT_FAILURE);
 		}
 		i++;
@@ -63,16 +74,16 @@ int	check_initialise_input(char **av, t_info *info)
 	info->time_eat = ft_atoi(av[3]);
 	info->time_sleep = ft_atoi(av[4]);
 	if (info->nbr_philo == 0 || info->time_die == 0)
-		return (print_usage_error(LOGIC_ERROR), 0);
+		return (print_errors(LOGIC_ERROR), 0);
 	if (info->time_eat == 0 || info->time_sleep == 0)
-		return (print_usage_error(LOGIC_ERROR), 0);
+		return (print_errors(LOGIC_ERROR), 0);
 	if (i == 5)
 		info->nbr_time_eat = -1;
 	else
 	{
 		info->nbr_time_eat = ft_atoi(av[5]);
 		if (info->nbr_time_eat == 0)
-			return (print_usage_error(LOGIC_ERROR), 0);
+			return (print_errors(LOGIC_ERROR), 0);
 	}
 	return (1);
 }
