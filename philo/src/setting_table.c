@@ -6,24 +6,22 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:24:53 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/23 02:58:42 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/23 05:11:15 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-// void	do_the_task(t_info *info, long timer)
-// {
-// 	long	elapsed;
-// 	long	start;
+void	do_the_task(t_info *info, long timer)
+{
+	long	elapsed;
+	long	start;
 
-// 	elapsed = 0;
-// 	start = current_time() - info->start_clock;
-// 	while (elapsed < timer)
-// 	{
-// 		elapsed = (current_time() - info->start_clock) - start;
-// 	}
-// }
+	elapsed = 0;
+	start = current_time() - info->start_clock;
+	while (elapsed < timer)
+		elapsed = (current_time() - info->start_clock) - start;
+}
 
 void	check_death(t_philo *philo)
 {
@@ -36,9 +34,7 @@ void	check_death(t_philo *philo)
 	if (time > philo->info->time_die)
 	{
 		print_messages(philo, current, DIED);
-		// cleanup(philo, philo->info);
 		exit(EXIT_SUCCESS);
-		philo->info->dead_philo = 1;
 	}
 	pthread_mutex_unlock(&(philo->info->death_mutex));
 }
