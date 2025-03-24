@@ -1,7 +1,7 @@
 #This is the brain of the whole operation.
 #Let's get this ship going!
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -pthread -I.
+CFLAGS = -Wall -Wextra -Werror -pthread -I.
 RM = rm -rf
 
 SRC_DIR = src

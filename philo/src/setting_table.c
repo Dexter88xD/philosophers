@@ -6,37 +6,61 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:24:53 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/23 05:11:15 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/24 14:13:59 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	do_the_task(t_info *info, long timer)
+int	do_the_task(t_philo *philo, long timer)
 {
 	long	elapsed;
 	long	start;
 
 	elapsed = 0;
-	start = current_time() - info->start_clock;
+	start = current_time() - philo->info->start_clock;
 	while (elapsed < timer)
-		elapsed = (current_time() - info->start_clock) - start;
+	{
+		elapsed = (current_time() - philo->info->start_clock) - start;
+		if (elapsed > philo->info->time_die)
+			break ;
+		pthread_mutex_lock(&(philo->info->death_mutex));
+		if (philo->info->dead_philo == 1)
+		{
+			pthread_mutex_unlock(&(philo->info->death_mutex));
+			break ;
+		}
+		pthread_mutex_unlock(&(philo->info->death_mutex));
+	}
+	if (elapsed < timer)
+		return (0);
+	return (1);
 }
 
-void	check_death(t_philo *philo)
+int	check_death(t_philo *philo)
 {
 	long	time;
 	long	current;
 
+	pthread_mutex_lock(&(philo->info->death_mutex));
+	if (philo->info->dead_philo)
+	{
+		pthread_mutex_unlock(&(philo->info->death_mutex));
+		return (0);
+	}
+	pthread_mutex_unlock(&(philo->info->death_mutex));
 	pthread_mutex_lock(&(philo->info->death_mutex));
 	current = current_time() - philo->info->start_clock;
 	time = current - philo->last_time_eat;
 	if (time > philo->info->time_die)
 	{
 		print_messages(philo, current, DIED);
-		exit(EXIT_SUCCESS);
+		philo->info->dead_philo = 1;
+		pthread_mutex_unlock(&(philo->info->death_mutex));
+		return (0);
 	}
 	pthread_mutex_unlock(&(philo->info->death_mutex));
+	return (1);
 }
 
 void	*simulate(void *param)
@@ -50,14 +74,16 @@ void	*simulate(void *param)
 	{
 		if (philo->info->nbr_time_eat != -1)
 		{
-			i++;
-			if (i > philo->info->nbr_time_eat)
+			if (++i > philo->info->nbr_time_eat)
 				break ;
 		}
 		think_philosophers(philo);
-		check_death(philo);
-		feed_philosophers(philo);
-		sleep_philosophers(philo);
+		if (!check_death(philo))
+			break ;
+		if (!feed_philosophers(philo))
+			break ;
+		if (!sleep_philosophers(philo))
+			break ;
 	}
 	return (NULL);
 }

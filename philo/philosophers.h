@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:52:38 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/23 05:18:37 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/24 13:21:58 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char				*ft_strchr(const char *s, int c);
 int					check_initialise_input(char **av, t_info *input);
 int					ft_atoi(const char *nptr);
 
-void				check_death(t_philo *philo);
+int					check_death(t_philo *philo);
 
 /***************INITALISING***************/
 
@@ -93,15 +93,15 @@ void				one_philo_issue(t_info *info, t_philo *philo);
 
 void				*simulate(void *param);
 
-void				think_philosophers(t_philo *philo);
+int					think_philosophers(t_philo *philo);
 
-void				feed_philosophers(t_philo *philo);
-void				feed_pair_philosophers(t_philo *philo);
-void				feed_unpair_philosophers(t_philo *philo);
+int					feed_philosophers(t_philo *philo);
+int					feed_pair_philosophers(t_philo *philo);
+int					feed_unpair_philosophers(t_philo *philo);
 
-void				sleep_philosophers(t_philo *philo);
+int					sleep_philosophers(t_philo *philo);
 
-void				do_the_task(t_info *info, long timer);
+int					do_the_task(t_philo *philo, long timer);
 
 /***************PRINTING***************/
 

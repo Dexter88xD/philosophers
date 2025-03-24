@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 13:54:56 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/24 00:11:16 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/24 11:26:46 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	initialise_mutexes(t_info *info, t_philo *philo)
 
 void	one_philo_issue(t_info *info, t_philo *philo)
 {
+	printf("%d %d is thinking\n", 0, philo->index);
 	usleep(info->time_die);
 	printf("%d %d died\n", info->time_die, philo->index);
 	free(info);
@@ -44,7 +45,6 @@ int	main(int ac, char **av)
 	t_philo	*philo;
 	int		i;
 
-	/*remove -g from makefile*/
 	if (ac < 5 || ac > 6)
 		return (print_errors(USAGE_ERROR), 1);
 	info = (t_info *)malloc(sizeof(t_info));
