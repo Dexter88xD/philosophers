@@ -6,7 +6,7 @@
 /*   By: sohamdan <sohamdan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:24:53 by sohamdan          #+#    #+#             */
-/*   Updated: 2025/03/24 14:13:59 by sohamdan         ###   ########.fr       */
+/*   Updated: 2025/03/25 01:13:15 by sohamdan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ void	*simulate(void *param)
 				break ;
 		}
 		think_philosophers(philo);
-		if (!check_death(philo))
-			break ;
+		// if (!check_death(philo))
+			// return (0);
 		if (!feed_philosophers(philo))
 			break ;
 		if (!sleep_philosophers(philo))
